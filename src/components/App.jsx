@@ -47,7 +47,7 @@ function App() {
 
 
 
-  function handleAdd(name, idCounter){
+/*   function handleAdd(name, idCounter){
 
       let haveDetails = name === "experience" ? "" : null
 
@@ -67,7 +67,27 @@ function App() {
       })
 
       console.log(newArr)
-    }  
+    }  */ 
+
+
+
+      function handleAdd(name, idCounter){
+
+        let newObject = add(name, idCounter)
+  
+        let newArr = [
+          ...fields[name],
+          newObject
+        ]
+        
+
+      setFields({
+          ...fields,
+          [name]: newArr 
+        })
+  
+        console.log(newArr)
+      } 
 
 
 /*   function handleChange(e, name) {
@@ -155,9 +175,49 @@ return (
       <General fields={fields.education} handleChange={handleChange} handleAdd={handleAdd} 
                 handleDelete={handleDelete} name={"education"}/>
       <h1>Experience Information:</h1>
-      <Experience fields={fields} setFields={setFields}/>
+      {/* <Experience fields={fields} setFields={setFields}/> */}
+      <General fields={fields.experience} handleChange={handleChange} handleAdd={handleAdd} 
+                handleDelete={handleDelete} name={"experience"}/>
     </> 
   )
 }
 
 export default App
+
+
+
+function add(name, idCounter){
+
+console.log("NAME", name)
+
+  let newObject
+
+switch(name){
+
+  case "experience":
+    newObject = {
+      id: idCounter, 
+      company: "Company Name",
+      role: "role name",
+      responsabilities: "responsabilities of the role",
+      details: true, 
+      required: null
+    }
+    console.log("exp obj", newObject)
+  break;
+
+  default:
+    newObject = {
+      id: idCounter,
+      title: "",
+      value: "",
+      details: null
+    }  
+    console.log("defaul obj", newObject)
+}
+
+console.log("final obj", newObject)
+
+return newObject
+
+}

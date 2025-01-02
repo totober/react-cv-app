@@ -31,136 +31,34 @@ function App() {
   let [fields, dispatch] = useReducer(reducer, initialFields)
 
 
-  /*   function handleAdd(name, newField){
-
-      newField.id = idCounter
-
-      let newArr = [
-        ...fields[name],
-        newField
-      ]
-  
-      setFields({
-        ...fields,
-        [name]: newArr 
-      })
-
-      setIdCounter(idCounter + 1)
-    }  */ 
-
-
-
-/*   function handleAdd(name, idCounter){
-
-      let haveDetails = name === "experience" ? "" : null
-
-      let newArr = [
-        ...fields[name],
-        {
-          id: idCounter,
-          title: "",
-          value: "",
-          details: haveDetails
-        }
-      ]
-  
-      setFields({
-        ...fields,
-        [name]: newArr 
-      })
-
-      console.log(newArr)
-    }  */ 
-
-
 
       function handleAdd(name, idCounter){
-  
-        
+    
         dispatch({
           type: "add",
           field: name,
           id: idCounter
         })
-
-  
-        console.log(fields)
       } 
 
+  function handleChange(e, name, prop) {
 
-/*   function handleChange(e, name) {
-
-    let inputID = Number(e.target.dataset.id)
-
-    let newArr = fields[name].map(f => {
-
-      if(f.id === inputID) {
-          return {
-              ...f,
-              value: e.target.value
-          }
-      } else {
-          return f
-      }
+      dispatch({
+        type: "change",
+        field: name,
+        event: e,
+        prop: prop
       })
-
-    setFields({
-      ...fields,
-      [name]: newArr
-    })
-} */
-
-function handleChange(e, name, prop) {
-
-  let inputID = Number(e.target.dataset.id)
-
-  let newArr = fields[name].map(f => {
-
-    if(f.id === inputID) {
-        return {
-            ...f,
-            [prop]: e.target.value,
-        }
-    } else {
-        return f
-    }
-    })
-
-  setFields({
-    ...fields,
-    [name]: newArr
-  })
-
-}
+  }
 
 
   function handleDelete(name, id, required){
 
-    let newArr
-    
-    if(!required) {
-      newArr = fields[name].filter(f => f.id !== id)
-    }
-
-    if(required) {
-      newArr = fields[name].map(f => {
-
-          if(f.id === id) {
-
-              return {
-                ...f,
-                value: ""
-              }
-          } else {
-            
-              return f
-          }
-      })
-    }
-
-    setFields({
-      ...fields,
-      [name]: newArr
+    dispatch({
+      type: "delete",
+      field: name,
+      id: id,
+      required: required
     })
   }
 
@@ -183,35 +81,6 @@ return (
 export default App
 
 
-
-/* function add(name, idCounter){
-
-  let newObject
-
-  switch(name){
-
-    case "experience":
-      newObject = {
-        id: idCounter, 
-        company: "Company Name",
-        role: "role name",
-        responsabilities: "responsabilities of the role",
-        details: true, 
-        required: null
-      }
-    break;
-
-    default:
-      newObject = {
-        id: idCounter,
-        title: "",
-        value: "",
-        details: null
-      }  
-  }
-
-  return newObject
-} */
 
 function add(name, idCounter){
 
@@ -241,6 +110,8 @@ function add(name, idCounter){
 
   return newObject
 }
+
+
 
 function reducer(fields, action){
 
@@ -280,6 +151,80 @@ function reducer(fields, action){
       }
     }
 
+    case "delete": {
+
+      let newArr
+
+      if(!action.required) {
+        newArr = fields[action.field].filter(f => f.id !== action.id)
+      }
+
+      if(action.required && action.field === "experience"){
+        
+        newArr = fields.experience.map(f => {
+
+          if(f.id === action.id) {
+
+              return {
+                ...f,
+                company: "",
+                role: "",
+                responsabilities: ""
+              }
+          } else {
+            
+              return f
+          }
+      })
+
+      }
+
+      if(action.required && action.field !== "experience"){
+
+        newArr = fields[action.field].map(f => {
+
+            if(f.id === action.id) {
+
+                return {
+                  ...f,
+                  value: ""
+                }
+            } else {
+              
+                return f
+            }
+          })
+      }
+
+
+        return {
+          ...fields,
+          [action.field]: newArr
+        }
+    }
+
+    case "change": {
+
+      let target = action.event.target
+      let inputID = Number(target.dataset.id)
+
+        let newArr = fields[action.field].map(f => {
+      
+          if(f.id === inputID) {
+              return {
+                  ...f,
+                  [action.prop]: target.value,
+              }
+          } else {
+              return f
+          }
+        })
+      
+      return {
+        ...fields,
+        [action.field]: newArr
+      } 
+    }
   }
 }
 

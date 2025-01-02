@@ -1,31 +1,34 @@
 import { useState } from 'react'
+import { useReducer } from 'react'
 import { General } from "./general"
 import { Education } from './education'
 import { Experience } from './experience'
 
+let initialFields = {
+  profile: [
+    {id: 0, title: "name", value: "toto ber", details: null, required: true},
+    {id: 1, title: "email", value: "totober@hotmail.com", details: null, required: true},
+    {id: 2, title: "phone", value: "2324-123456", details: null, required: true}
+  ],
+  education: [
+    {id: 0, title: "school", value: "", details: null, required: true},
+    {id: 1, title: "university", value: "", details: null, required: true}
+  ],
+  experience: [
+    {
+      id: 0, 
+      company: "Company Name",
+      role: "role name",
+      responsabilities: "responsabilities of the role",
+      details: true, 
+      required: true
+    }
+  ]
+}
+
 
 function App() {
-  let [fields, setFields] = useState({
-      profile: [
-        {id: 0, title: "name", value: "toto ber", details: null, required: true},
-        {id: 1, title: "email", value: "totober@hotmail.com", details: null, required: true},
-        {id: 2, title: "phone", value: "2324-123456", details: null, required: true}
-      ],
-      education: [
-        {id: 0, title: "school", value: "", details: null, required: true},
-        {id: 1, title: "university", value: "", details: null, required: true}
-      ],
-      experience: [
-        {
-          id: 0, 
-          company: "Company Name",
-          role: "role name",
-          responsabilities: "responsabilities of the role",
-          details: true, 
-          required: true
-        }
-      ]
-    })
+  let [fields, dispatch] = useReducer(reducer, initialFields)
 
 
   /*   function handleAdd(name, newField){
@@ -72,21 +75,16 @@ function App() {
 
 
       function handleAdd(name, idCounter){
-
-        let newObject = add(name, idCounter)
   
-        let newArr = [
-          ...fields[name],
-          newObject
-        ]
         
-
-      setFields({
-          ...fields,
-          [name]: newArr 
+        dispatch({
+          type: "add",
+          field: name,
+          id: idCounter
         })
+
   
-        console.log(newArr)
+        console.log(fields)
       } 
 
 
@@ -186,38 +184,102 @@ export default App
 
 
 
-function add(name, idCounter){
-
-console.log("NAME", name)
+/* function add(name, idCounter){
 
   let newObject
 
-switch(name){
+  switch(name){
 
-  case "experience":
-    newObject = {
-      id: idCounter, 
-      company: "Company Name",
-      role: "role name",
-      responsabilities: "responsabilities of the role",
-      details: true, 
-      required: null
+    case "experience":
+      newObject = {
+        id: idCounter, 
+        company: "Company Name",
+        role: "role name",
+        responsabilities: "responsabilities of the role",
+        details: true, 
+        required: null
+      }
+    break;
+
+    default:
+      newObject = {
+        id: idCounter,
+        title: "",
+        value: "",
+        details: null
+      }  
+  }
+
+  return newObject
+} */
+
+function add(name, idCounter){
+
+  let newObject
+
+  switch(name){
+
+    case "experience":
+      newObject = {
+        id: idCounter, 
+        company: "Company Name",
+        role: "role name",
+        responsabilities: "responsabilities of the role",
+        details: true, 
+        required: null
+      }
+    break;
+
+    default:
+      newObject = {
+        id: idCounter,
+        title: "",
+        value: "",
+        details: null
+      }  
+  }
+
+  return newObject
+}
+
+function reducer(fields, action){
+
+  switch(action.type){
+
+    case "add": {
+
+      let newField
+
+      if(action.field === "experience"){
+
+        newField = {
+          id: action.id, 
+          company: "Company Name",
+          role: "role name",
+          responsabilities: "responsabilities of the role",
+          details: true, 
+          required: null
+        }
+      } else {
+
+        newField = {
+          id: action.id,
+          title: "",
+          value: "",
+          details: null
+        }
+      }
+
+      return {
+        ...fields,
+        [action.field]: [
+          ...fields[action.field],
+          newField
+        ]
+
+      }
     }
-    console.log("exp obj", newObject)
-  break;
 
-  default:
-    newObject = {
-      id: idCounter,
-      title: "",
-      value: "",
-      details: null
-    }  
-    console.log("defaul obj", newObject)
+  }
 }
 
-console.log("final obj", newObject)
-
-return newObject
-
-}

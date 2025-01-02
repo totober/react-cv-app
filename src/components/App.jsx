@@ -1,28 +1,34 @@
 import { useState } from 'react'
 import { General } from "./general"
 import { Education } from './education'
+import { Experience } from './experience'
 
 
 function App() {
-  let [idCounter, setIdCounter] = useState(6)
   let [fields, setFields] = useState({
       profile: [
-        {id: 0, title: "name", value: "toto ber", required: true},
-        {id: 1, title: "email", value: "totober@hotmail.com", required: true},
-        {id: 2, title: "phone", value: "2324-123456", required: true}
+        {id: 0, title: "name", value: "toto ber", details: null, required: true},
+        {id: 1, title: "email", value: "totober@hotmail.com", details: null, required: true},
+        {id: 2, title: "phone", value: "2324-123456", details: null, required: true}
       ],
       education: [
-        {id: 3, title: "school", value: "", required: true},
-        {id: 4, title: "university", value: "", required: true}
+        {id: 0, title: "school", value: "", details: null, required: true},
+        {id: 1, title: "university", value: "", details: null, required: true}
       ],
       experience: [
-        {id: 5, title: "Company Name", value: "", details: "", required: true }
+        {
+          id: 0, 
+          company: "Company Name",
+          role: "role name",
+          responsabilities: "responsabilities of the role",
+          details: true, 
+          required: true
+        }
       ]
     })
 
 
-
-    function handleAdd(name, newField){
+  /*   function handleAdd(name, newField){
 
       newField.id = idCounter
 
@@ -37,10 +43,34 @@ function App() {
       })
 
       setIdCounter(idCounter + 1)
+    }  */ 
+
+
+
+  function handleAdd(name, idCounter){
+
+      let haveDetails = name === "experience" ? "" : null
+
+      let newArr = [
+        ...fields[name],
+        {
+          id: idCounter,
+          title: "",
+          value: "",
+          details: haveDetails
+        }
+      ]
+  
+      setFields({
+        ...fields,
+        [name]: newArr 
+      })
+
+      console.log(newArr)
     }  
 
 
-  function handleChange(e, name) {
+/*   function handleChange(e, name) {
 
     let inputID = Number(e.target.dataset.id)
 
@@ -60,6 +90,29 @@ function App() {
       ...fields,
       [name]: newArr
     })
+} */
+
+function handleChange(e, name, prop) {
+
+  let inputID = Number(e.target.dataset.id)
+
+  let newArr = fields[name].map(f => {
+
+    if(f.id === inputID) {
+        return {
+            ...f,
+            [prop]: e.target.value,
+        }
+    } else {
+        return f
+    }
+    })
+
+  setFields({
+    ...fields,
+    [name]: newArr
+  })
+
 }
 
 
@@ -101,7 +154,9 @@ return (
       <h1>Education Information:</h1>
       <General fields={fields.education} handleChange={handleChange} handleAdd={handleAdd} 
                 handleDelete={handleDelete} name={"education"}/>
-    </>
+      <h1>Experience Information:</h1>
+      <Experience fields={fields} setFields={setFields}/>
+    </> 
   )
 }
 

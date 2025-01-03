@@ -8,15 +8,8 @@ import { Experience } from './experience'
 export default function App() {
   let [fields, dispatch] = useReducer(reducer, initialFields)
   let [canSubmit, setCanSubmit] = useState({experience: false, profile: false, education: false})
-  let readyForSubmit = true
 
-  for (let prop in canSubmit) {
-
-    if(canSubmit[prop] === false) {
-      readyForSubmit = false
-      break
-    }
-  }
+  let readyForSubmit = Object.values(canSubmit).every((value) => value !== false)
 
   function canSubmitUpdater(name, bool){
 

@@ -4,42 +4,36 @@ import { General } from "./general"
 import { Education } from './education'
 import { Experience } from './experience'
 
-let initialFields = {
-  profile: [
-    {id: 0, title: "name", value: "toto ber", details: null, required: true},
-    {id: 1, title: "email", value: "totober@hotmail.com", details: null, required: true},
-    {id: 2, title: "phone", value: "2324-123456", details: null, required: true}
-  ],
-  education: [
-    {id: 0, title: "school", value: "", details: null, required: true},
-    {id: 1, title: "university", value: "", details: null, required: true}
-  ],
-  experience: [
-    {
-      id: 0, 
-      company: "Company Name",
-      role: "role name",
-      responsabilities: "responsabilities of the role",
-      details: true, 
-      required: true
-    }
-  ]
-}
 
-
-function App() {
+export default function App() {
   let [fields, dispatch] = useReducer(reducer, initialFields)
+  let [canSubmit, setCanSubmit] = useState({experience: false, profile: false, education: false})
+  let readyForSubmit = true
 
+  for (let prop in canSubmit) {
 
+    if(canSubmit[prop] === false) {
+      readyForSubmit = false
+      break
+    }
+  }
 
-      function handleAdd(name, idCounter){
+  function canSubmitUpdater(name, bool){
+
+    setCanSubmit({
+        ...canSubmit,
+        [name]: bool
+    })
+  }
+
+  function handleAdd(name, idCounter){
     
-        dispatch({
-          type: "add",
-          field: name,
-          id: idCounter
-        })
-      } 
+      dispatch({
+        type: "add",
+        field: name,
+        id: idCounter
+      })
+  } 
 
   function handleChange(e, name, prop) {
 
@@ -66,51 +60,41 @@ return (
     <>
       <h1>General Information:</h1>
       <General fields={fields.profile} handleChange={handleChange} handleAdd={handleAdd} 
-                handleDelete={handleDelete} name={"profile"}/>
+                handleDelete={handleDelete} name={"profile"} canSubmit={canSubmitUpdater}/>
+
       <h1>Education Information:</h1>
       <General fields={fields.education} handleChange={handleChange} handleAdd={handleAdd} 
-                handleDelete={handleDelete} name={"education"}/>
+                handleDelete={handleDelete} name={"education"} canSubmit={canSubmitUpdater}/>
       <h1>Experience Information:</h1>
-      {/* <Experience fields={fields} setFields={setFields}/> */}
       <General fields={fields.experience} handleChange={handleChange} handleAdd={handleAdd} 
-                handleDelete={handleDelete} name={"experience"}/>
+                handleDelete={handleDelete} name={"experience"} canSubmit={canSubmitUpdater}/>
+                
+      {readyForSubmit ? <button>Submit CV</button>
+       : <p>Please, complete and submit all the sections</p>}
     </> 
   )
 }
 
-export default App
-
-
-
-function add(name, idCounter){
-
-  let newObject
-
-  switch(name){
-
-    case "experience":
-      newObject = {
-        id: idCounter, 
-        company: "Company Name",
-        role: "role name",
-        responsabilities: "responsabilities of the role",
-        details: true, 
-        required: null
-      }
-    break;
-
-    default:
-      newObject = {
-        id: idCounter,
-        title: "",
-        value: "",
-        details: null
-      }  
-  }
-
-  return newObject
+let initialFields = {
+  profile: [
+    {id: 0, title: "name", value: "toto ber", required: true},
+    {id: 1, title: "email", value: "totober@hotmail.com", required: true},
+    {id: 2, title: "phone", value: "2324-123456", required: true}
+  ],
+  education: [
+    {id: 0, title: "school", value: "", required: true},
+    {id: 1, title: "university", value: "", required: true}
+  ],
+  experience: [
+    {
+      id: 0, 
+      company: "Company Name",
+      role: "role name",
+      responsabilities: "responsabilities of the role",
+      required: true
+    }
+  ]
 }
-
 
 
 function reducer(fields, action){

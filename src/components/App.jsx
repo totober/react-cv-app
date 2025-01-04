@@ -55,7 +55,7 @@ export default function App() {
 
     return (
       <>
-        <h1>Thanks for application!</h1>
+        <h1>Thanks for your application!</h1>
         <br/>
         <h1>Our team is going to evaluate your CV and send you an email!</h1>
       </>

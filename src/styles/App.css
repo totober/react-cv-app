@@ -6,5 +6,13 @@
   text-align: center;
 }
 
+.app > :last-child {
+  margin-block-start: 3rem;
+}
+
+.app > button{
+  font-size: 1.1rem;
+  padding-inline: 1rem;
+}
 
 

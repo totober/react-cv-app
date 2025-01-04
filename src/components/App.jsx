@@ -9,6 +9,7 @@ import "../styles/App.css"
 export default function App() {
   let [fields, dispatch] = useReducer(reducer, initialFields)
   let [canSubmit, setCanSubmit] = useState({experience: false, profile: false, education: false})
+  let [submitted, setSubmitted] = useState(false)
 
   let readyForSubmit = Object.values(canSubmit).every((value) => value !== false)
 
@@ -50,8 +51,21 @@ export default function App() {
     })
   }
 
+  if(submitted){
+
+    return (
+      <>
+        <h1>Thanks for application!</h1>
+        <br/>
+        <h1>Our team is going to evaluate your CV and send you an email!</h1>
+      </>
+      
+
+    )
+  }
+
 return (
-    <>
+    <section className='app'>
       <h1>General Information:</h1>
       <General  fields={fields.profile} handleChange={handleChange} handleAdd={handleAdd} 
                 handleDelete={handleDelete} name={"profile"} canSubmit={canSubmitUpdater}/>
@@ -63,9 +77,9 @@ return (
       <General fields={fields.experience} handleChange={handleChange} handleAdd={handleAdd} 
                 handleDelete={handleDelete} name={"experience"} canSubmit={canSubmitUpdater}/>
                 
-      {readyForSubmit ? <button>Submit CV</button>
+      {readyForSubmit ? <button onClick={() => setSubmitted(true)}>Submit CV</button>
        : <p>Please, complete and submit all the sections</p>}
-    </> 
+    </section> 
   )
 }
 

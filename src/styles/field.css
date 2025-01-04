@@ -1,0 +1,47 @@
+
+.field{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: repeat(auto-fit, 1fr);
+    grid-template-areas: 
+        "label button"
+}
+
+.field-exp{
+     display: grid;
+     grid-template-columns: 1fr;
+         grid-template-areas: 
+        "label button"
+        "label2 ."
+        "label3 ."
+ }
+
+.field-exp :first-child{
+    grid-area: label;
+}
+
+.field-exp :nth-child(2){
+    grid-area: label2;
+}
+
+.field-exp :nth-child(3){
+    grid-area: label3;
+    white-space: pre-wrap;
+}
+
+button.delete{
+    border-radius: 50%;
+    border: none;
+    grid-area: button;
+    max-width: fit-content;
+    align-self: start;
+}
+
+label{
+    grid-area: label;
+}
+
+p{
+    grid-area: para;
+    margin-inline-start: 2rem;
+}

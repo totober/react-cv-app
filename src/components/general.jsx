@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Field from "./field"
 import Input from "./input"
-import AddField from "./addField"
+import "../styles/general.css"
 
 
 
@@ -34,17 +34,17 @@ let [state, setState] = useState("editing")
 
 
         return (
-            <>
+            <div className={"card"}>
                 { fields.map(f => <Input key={f.id} field={f} handleChange={handleChange} name={name}/>) }
                 <button onClick={handleSubmitBtn}>Submit</button>
-            </>
+            </div>
         )
     }
     
     if(state === "adding") {
     
         return (
-            <>
+            <div className={"card"}>
                 {   fields.map((f, index) => {
                         let stop = fields.length - 1
                         
@@ -58,16 +58,18 @@ let [state, setState] = useState("editing")
                     }) 
                 }
                 <button onClick={handleSubmitBtn}>Submit</button>
-            </>
+            </div>
         )
     }
         
     return (
-        <>
+        <div className={"card"}>
             {   fields.map(f => <Field key={f.id} field={f} handleDelete={handleDelete} name={name}/>) }
-                    <button onClick={handleEditBtn}>Edit</button>
-                    <button onClick={handleAddBtn}>Add new field</button>
-        </>
+            <div className={"btn-wrapper"}>
+                <button onClick={handleEditBtn}>Edit fields</button>
+                <button onClick={handleAddBtn}>Add new field</button>
+            </div> 
+        </div>
     )
 }
 

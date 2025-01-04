@@ -1,0 +1,32 @@
+.card {
+
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+
+    text-align: start;
+    padding: 1rem;
+    margin-block: .5rem;
+    margin-inline: auto;
+    border-radius: 5px;
+    border: 2px solid var(--color-white);
+}
+
+.card > label {
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+}
+
+.card > button {
+    margin-block-start: 1.5rem;
+}
+
+button {
+    max-width: fit-content;
+}
+
+.btn-wrapper > button + button{
+
+    margin-inline-start: 2rem;
+}

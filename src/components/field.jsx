@@ -1,9 +1,11 @@
+import "../styles/field.css"
+
 export default function Field({field, handleDelete, name}){
 
     if(name === "experience") {
 
         return (
-            <>
+            <div className="field-exp">
                 <label>Company name :
                     <p>{field.company}</p>
                 </label>
@@ -13,18 +15,22 @@ export default function Field({field, handleDelete, name}){
                 <label>Responsabilities :
                     <p>{field.responsabilities}</p>
                 </label>
-                <button onClick={() => handleDelete(name, field.id, field.required)}>X</button>
-            </>
+                <button  className ={"delete"} onClick={() => handleDelete(name, field.id, field.required)}>
+                    X
+                </button>
+            </div>
         )
     }
 
     return (
-        <>
+        <div className="field">
             <label>{field.title} :
                 <p>{field.value}</p>
             </label>
-            <button onClick={() => handleDelete(name, field.id, field.required)}>X</button>
-        </>
+            <button  className ={"delete"} onClick={() => handleDelete(name, field.id, field.required)}>
+                    X
+            </button>
+        </div>
     )
 }
 

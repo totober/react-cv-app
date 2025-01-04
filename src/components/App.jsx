@@ -3,6 +3,7 @@ import { useReducer } from 'react'
 import { General } from "./general"
 import { Education } from './education'
 import { Experience } from './experience'
+import "../styles/App.css"
 
 
 export default function App() {
@@ -52,7 +53,7 @@ export default function App() {
 return (
     <>
       <h1>General Information:</h1>
-      <General fields={fields.profile} handleChange={handleChange} handleAdd={handleAdd} 
+      <General  fields={fields.profile} handleChange={handleChange} handleAdd={handleAdd} 
                 handleDelete={handleDelete} name={"profile"} canSubmit={canSubmitUpdater}/>
 
       <h1>Education Information:</h1>
